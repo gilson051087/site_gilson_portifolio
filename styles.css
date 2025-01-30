@@ -934,6 +934,7 @@ body {
     gap: 1.5rem;
     max-width: 600px;
     margin: 0 auto;
+    animation: fadeInDown 0.5s ease forwards;
 }
 
 .contact-form input,
