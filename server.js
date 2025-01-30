@@ -23,7 +23,9 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio
     console.error('Error connecting to MongoDB:', err);
 });
 
-// Message Schema
+// Mensagem Schema
+
+
 const messageSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -43,9 +45,30 @@ const messageSchema = new mongoose.Schema({
     }
 });
 
+
+document.addEventListener('DOMContentLoaded', function(){
+    function enviarWhatsApp() {
+        var nome = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var mensagem = document.getElementById('message').value;
+    
+        if (!nome || !email || !mensagem) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+    
+        var telefone = "5541999642855";
+        var texto = `Olá, meu nome é ${nome}, meu email é ${email} e gostaria de falar sobre: ${mensagem}`;
+    
+        var url = `https://wa.me/${telefone}?text=${encodeURIComponent(texto)}`;
+        window.open(url, '_blank');
+    }
+})
+
 const Message = mongoose.model('Message', messageSchema);
 
 // Routes
+
 app.post('/api/messages', async (req, res) => {
     try {
         const { name, email, message } = req.body;
@@ -61,6 +84,7 @@ app.post('/api/messages', async (req, res) => {
         res.status(500).json({ error: 'Erro ao enviar mensagem. Tente novamente.' });
     }
 });
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
