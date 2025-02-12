@@ -6,14 +6,12 @@ const path = require('path');
 
 const app = express();
 
-
-//Requirimento Midlleware
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
 
-// MongoDB Connection
+// Conexão MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -23,11 +21,13 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio
     console.error('Error connecting to MongoDB:', err);
 });
 
-// Mensagem Schema
-
-
+// Schema de Mensagem
 const messageSchema = new mongoose.Schema({
     name: {
+        type: String,
+        required: true
+    },
+    email: {
         type: String,
         required: true
     },
