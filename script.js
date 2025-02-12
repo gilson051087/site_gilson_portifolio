@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Mobile Menu Toggle
+    // Alternar menu móvel
     const menuBtn = document.querySelector('.menu-btn');
     const navLinks = document.querySelector('.nav-links');
     let menuOpen = false;
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Smooth Scroll for Navigation Links
+    // Rolagem suave para links de navegação
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     behavior: 'smooth',
                     block: 'start'
                 });
-                // Close mobile menu if open
+                // Fecha o menu móvel se estiver aberto
                 if (menuOpen) {
                     menuBtn.click();
                 }
@@ -41,23 +41,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Form Submission
+    // Envio de formulário de contato
     const contactForm = document.querySelector('#contactForm');
     contactForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Show loading state
+        // Mostra o estado de carregamento
         const submitBtn = contactForm.querySelector('.submit-btn');
         const originalBtnText = submitBtn.textContent;
         submitBtn.textContent = 'Enviando...';
         submitBtn.disabled = true;
         
         try {
-            // Get form data
+            // Obter dados do formulário
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData);
             
-            // Send to backend
+            // Enviar para backend
             const response = await fetch('/api/messages', {
                 method: 'POST',
                 headers: {
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.error || 'Erro ao enviar mensagem');
             }
             
-            // Show success message
+            // Mostrar mensagem de sucesso
             showNotification('Mensagem enviada com sucesso!', 'success');
             contactForm.reset();
             
@@ -80,20 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
             showNotification(error.message || 'Erro ao enviar mensagem. Tente novamente.', 'error');
         } finally {
-            // Reset button state
+            // Resetar estado do botão
             submitBtn.textContent = originalBtnText;
             submitBtn.disabled = false;
         }
     });
 
-    // Notification function
+    // Função de notificação
     function showNotification(message, type = 'success') {
-        // Create notification element
+        // Criar elemento de notificação
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.textContent = message;
         
-        // Add styles
+        // Adicionar estilos
         notification.style.position = 'fixed';
         notification.style.bottom = '20px';
         notification.style.right = '20px';
@@ -107,16 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
         notification.style.transform = 'translateY(20px)';
         notification.style.transition = 'all 0.3s ease';
         
-        // Add to document
+        // Adicionar ao documento
         document.body.appendChild(notification);
         
-        // Trigger animation
+        // Acionar animação
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateY(0)';
         }, 100);
         
-        // Remove after delay
+        // Remover após o atraso
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateY(20px)';
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // Scroll Animation for Elements
+    // Animação de rolagem para elementos
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -141,12 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    // Observe all sections
+    // Observar todas as seções
     document.querySelectorAll('section').forEach(section => {
         observer.observe(section);
     });
 
-    // Header Scroll Animation
+    // Animação de rolagem do cabeçalho
     const header = document.querySelector('.header');
     let lastScroll = 0;
 
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lastScroll = currentScroll;
     });
 
-    // Mobile Menu Animation
+    // Animação do menu móvel
     menuBtn.addEventListener('click', () => {
         if (!menuOpen) {
             menuBtn.classList.add('open');
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Close mobile menu when clicking outside
+    // Fechar menu móvel ao clicar fora
     document.addEventListener('click', (e) => {
         if (menuOpen && !e.target.closest('.nav-bar')) {
             menuBtn.classList.remove('open');
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Active link highlighting
+    // Destacar link ativo
     const sections = document.querySelectorAll('section');
     const navItems = document.querySelectorAll('.nav-links a');
 
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Add scroll-based header shadow
+    // Adicionar sombra ao cabeçalho com base na rolagem
     window.addEventListener('scroll', () => {
         if (window.scrollY > 0) {
             header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
@@ -217,14 +217,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize AOS
+    // Inicializar AOS
     AOS.init({
         duration: 800,
         once: true,
         offset: 100
     });
 
-    // Skill Progress Animation
+    // Animação de progresso das habilidades
     const skillLevels = document.querySelectorAll('.skill-level');
     
     const animateSkills = (entries, observer) => {
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const progressBar = entry.target.querySelector('.skill-progress');
                 const level = entry.target.dataset.level;
                 
-                // Add a small delay before starting the animation
+                // Adicionar um pequeno atraso antes de iniciar a animação
                 setTimeout(() => {
                     progressBar.style.width = `${level}%`;
                 }, 200);
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         skillsObserver.observe(skill);
     });
 
-    // Add hover effect for skill categories
+    // Adicionar efeito de hover para categorias de habilidades
     const skillCategories = document.querySelectorAll('.skill-category');
     
     skillCategories.forEach(category => {
