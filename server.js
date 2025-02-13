@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 const Message = mongoose.model('Message', messageSchema);
 
-// Routes
+// Rotas mensageria
 
 app.post('/api/messages', async (req, res) => {
     try {
