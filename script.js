@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Rolagem suave para links de navegação
+    // Cira uma rolagem suave para links de navegação
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     block: 'start'
                 });
                 // Fecha o menu móvel se estiver aberto
+                
                 if (menuOpen) {
                     menuBtn.click();
                 }
@@ -141,12 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    // Observe all sections
+    // "Observe" Todas as seções
     document.querySelectorAll('section').forEach(section => {
         observer.observe(section);
     });
 
-    // Header Scroll Animation
+    //  Animação rolagem do cabeçalho
     const header = document.querySelector('.header');
     let lastScroll = 0;
 
@@ -162,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lastScroll = currentScroll;
     });
 
-    // Mobile Menu Animation
+    // Menu de animação Mobile
     menuBtn.addEventListener('click', () => {
         if (!menuOpen) {
             menuBtn.classList.add('open');
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Close mobile menu when clicking outside
+    // Fecha o menu móvel ao clicar fora
     document.addEventListener('click', (e) => {
         if (menuOpen && !e.target.closest('.nav-bar')) {
             menuBtn.classList.remove('open');
@@ -184,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Active link highlighting
+    // Destacar link ativo
     const sections = document.querySelectorAll('section');
     const navItems = document.querySelectorAll('.nav-links a');
 
@@ -208,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Add scroll-based header shadow
+    // Adiciona sombra de cabeçalho baseada na rolagem
     window.addEventListener('scroll', () => {
         if (window.scrollY > 0) {
             header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
@@ -217,14 +218,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize AOS
+    // Inicializa AOS
     AOS.init({
         duration: 800,
         once: true,
         offset: 100
     });
 
-    // Skill Progress Animation
+    // Animaçao das habilidades
     const skillLevels = document.querySelectorAll('.skill-level');
     
     const animateSkills = (entries, observer) => {
@@ -233,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const progressBar = entry.target.querySelector('.skill-progress');
                 const level = entry.target.dataset.level;
                 
-                // Add a small delay before starting the animation
+                // Atrasa a animação antes de começar
                 setTimeout(() => {
                     progressBar.style.width = `${level}%`;
                 }, 200);
@@ -254,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         skillsObserver.observe(skill);
     });
 
-    // Add hover effect for skill categories
+    // Efeito de foco em habilidades
     const skillCategories = document.querySelectorAll('.skill-category');
     
     skillCategories.forEach(category => {
