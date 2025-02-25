@@ -98,7 +98,7 @@ app.post('/api/messages', async (req, res) => {
         await newMessage.save();
 
         // Enviar dados para o webhook n8n
-        const webhookUrl = 'https://gilsonelias.app.n8n.cloud/webhook-test/645dd501-fa73-46bd-8e5d-730d467012c9'; // Minha URL webhook
+        const webhookUrl = 'https://gilsonelias.app.n8n.cloud/webhook/645dd501-fa73-46bd-8e5d-730d467012c9'; // Minha URL webhook
         const webhookData = { name, email, message };
 
         // Requisição POST para o webhook
