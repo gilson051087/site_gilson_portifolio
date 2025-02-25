@@ -3,7 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const fetch = require('node-fetch'); // Para fazer a requisição HTTP para o webhook
+const fetch = require('node-fetch');
+const nodemailer = require('nodemailer'); // Para enviar e-mails
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
 
 // Conexão MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio', {
+mongoose.connect(process.env.MONGODB_URI || 'criando o banco de dados', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -52,7 +53,37 @@ function enviarWhatsApp(nome, email, mensagem) {
     window.open(url, '_blank');
 }
 
-// Rota de API para salvar mensagem e enviar o webhook
+// Função para gerar template HTML
+function generateHtmlTemplate(name, email, message) {
+    return `
+        <h1>Nova Mensagem Recebida</h1>
+        <p><strong>Nome:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mensagem:</strong> ${message}</p>
+    `;
+}
+
+// Função para enviar e-mail
+async function sendEmail(name, email, message) {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: 'destinatario@example.com', // Substitua pelo e-mail do destinatário
+        subject: 'Nova Mensagem Recebida',
+        html: generateHtmlTemplate(name, email, message)
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
+// Rota de API para salvar mensagem, enviar o webhook e enviar e-mail
 app.post('/api/messages', async (req, res) => {
     try {
         const { name, email, message } = req.body;
@@ -81,6 +112,9 @@ app.post('/api/messages', async (req, res) => {
 
         // Enviar WhatsApp
         enviarWhatsApp(name, email, message);
+
+        // Enviar e-mail
+        await sendEmail(name, email, message);
 
         // Resposta de que deu certo
         res.status(201).json({ message: 'Mensagem enviada com sucesso!' });
