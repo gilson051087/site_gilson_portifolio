@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
 
 // Conexão MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'criando o banco de dados', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.4.0', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
