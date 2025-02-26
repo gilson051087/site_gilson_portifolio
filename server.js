@@ -89,40 +89,34 @@ app.post('/api/messages', async (req, res) => {
         const { name, email, message } = req.body;
 
         // Criando e salvando a nova mensagem no banco
-        const newMessage = new Message({
-            name,
-            email,
-            message
-        });
-
+        const newMessage = new Message({ name, email, message });
         await newMessage.save();
 
         // Enviar dados para o webhook n8n
         const webhookUrl = 'https://gilsonelias.app.n8n.cloud/webhook/973268ac-df09-4052-8113-fea1d16176aa'; // Minha URL webhook
-        const webhookData = { name, email, message };
-
-        // Requisição POST para o webhook
         await fetch(webhookUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(webhookData)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
         });
-
-        // Enviar WhatsApp
-        enviarWhatsApp(name, email, message);
 
         // Enviar e-mail
         await sendEmail(name, email, message);
 
-        // Resposta de que deu certo
-        res.status(201).json({ message: 'Mensagem enviada com sucesso!' });
+        // Gerar link do WhatsApp
+        const whatsappUrl = gerarWhatsAppUrl(name, email, message);
+
+        // Retornar resposta JSON incluindo o link do WhatsApp
+        res.status(201).json({
+            message: 'Mensagem enviada com sucesso!',
+            whatsappUrl
+        });
     } catch (error) {
         console.error('Error saving message:', error);
         res.status(500).json({ error: 'Erro ao enviar mensagem. Tente novamente.' });
     }
 });
+
 
 // Rota de renderização da página HTML
 app.get('/', (req, res) => {
